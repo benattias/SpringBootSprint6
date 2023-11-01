@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="template">
+
+<link rel="stylesheet" type="text/css"
+href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Joueurs</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+<div class="container mt-5">
+<div class="card">
+ <div class="card-header">
+ Liste des Joueurs
+ </div>
+ <div class="card-body">
+ <table class="table table-striped">
+ <tr>
+ <th>ID Joueur</th><th>Nom Joueur</th><th>Prenom Joueur</th><th>Date de naissance</th>
+ <th>Equipe</th>
+ </tr>
+ <tr th:each="j:${joueurs.content}">
+ <td th:text="${j.idJoueur}"></td>
+ <td th:text="${j.nomJoueur}"></td>
+ <td th:text="${j.prenomJoueur}"></td>
+ <td th:text="${j.dateNaissance}"></td>
+  <td   th:if= "${!#strings.isEmpty(j.equipe)}"   th:text="${j.equipe.nomEq}"></td>  
+              <td   th:if= "${#strings.isEmpty(j.equipe)}"     th:text="${'Pas de Equipe'}"></td> 
+               	
+
+               <td ><a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+                th:href="@{supprimerJoueur(id=${j.idJoueur}, page=${page},size=${size})}">Supprimer</a>
+               </td> 
+              <td ><a class="btn btn-success" th:href="@{modifierJoueur(id=${j.idJoueur},page=${currentPage})}">Editer</a></td>   
+           </tr>             
+      </table>
+            <ul class="nav nav-pills">
+         <li th:each="page,status:${pages}">
+           <a th:class="${status.index==currentPage?'btn btn-primary':'btn'  }" 
+              th:href="@{ ListeJoueurs(page=${status.index}, size=${size} ) }"
+              th:text="${status.index }"></a>
+         </li>
+      </ul>
+      
+  </div>
+</div>
+</div>
+</div>
+</body>
+</html>
